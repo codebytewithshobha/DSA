@@ -2,42 +2,44 @@ class Solution {
 public:
     vector<int> findEvenNumbers(vector<int>& digits) {
 
-        set<int> st;
+        vector<int> freq(10, 0);
 
-        int n = digits.size();
+        for(int d : digits)
+            freq[d]++;
 
-        for(int i = 0; i < n; i++) {
+        vector<int> ans;
 
-            // first digit cannot be zero
-            if(digits[i] == 0)
+
+        for(int first = 1; first <= 9; first++) {
+
+            if(freq[first] == 0)
                 continue;
 
-            for(int j = 0; j < n; j++) {
+            freq[first]--;
 
-                if(j == i)
+            for(int second = 0; second <= 9; second++) {
+
+                if(freq[second] == 0)
                     continue;
 
-                for(int k = 0; k < n; k++) {
+                freq[second]--;
 
-                    if(k == i || k == j)
-                        continue;
+                // last digit must be even
+                for(int last = 0; last <= 8; last += 2) {
 
-
-                    // last digit must be even
-                    if(digits[k] % 2 != 0)
-                        continue;
-
-
-                    int num = digits[i] * 100 +
-                              digits[j] * 10 +
-                              digits[k];
-
-                    st.insert(num);
+                    if(freq[last] > 0) {
+                        ans.push_back(
+                            first * 100 + second * 10 + last
+                        );
+                    }
                 }
+
+                freq[second]++;
             }
+
+            freq[first]++;
         }
 
-
-        return vector<int>(st.begin(), st.end());
+        return ans;
     }
 };
