@@ -1,44 +1,28 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
+        // One hash set per row, column, and box
+        unordered_set<char> rows[9];
+        unordered_set<char> cols[9];
+        unordered_set<char> boxes[9];
 
-        vector<unordered_set<char>> rows(9);
-        vector<unordered_set<char>> cols(9);
-        vector<unordered_set<char>> boxes(9);
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                char digit = board[r][c];
 
-        for (int row = 0; row < 9; row++) {
+                if (digit == '.') continue;  // skip empty cells
 
-            for (int col = 0; col < 9; col++) {
+                int boxIndex = (r / 3) * 3 + (c / 3);
 
-                // Ignore empty cells
-                if (board[row][col] == '.') {
-                    continue;
-                }
-
-                char num = board[row][col];
-
-                // Find the 3x3 box
-                int box = (row / 3) * 3 + (col / 3);
-
-                // Check duplicate in row
-                if (rows[row].count(num)) {
+                // If digit already seen in this row, column, or box -> invalid
+                if (rows[r].count(digit) || cols[c].count(digit) || boxes[boxIndex].count(digit)) {
                     return false;
                 }
 
-                // Check duplicate in column
-                if (cols[col].count(num)) {
-                    return false;
-                }
-
-                // Check duplicate in box
-                if (boxes[box].count(num)) {
-                    return false;
-                }
-
-                // Store the number
-                rows[row].insert(num);
-                cols[col].insert(num);
-                boxes[box].insert(num);
+                // Mark digit as seen in all three
+                rows[r].insert(digit);
+                cols[c].insert(digit);
+                boxes[boxIndex].insert(digit);
             }
         }
 
