@@ -20,6 +20,5 @@ public:
 
         // Step 3: All of 1..n are present
         return n + 1;
-        
     }
 };
