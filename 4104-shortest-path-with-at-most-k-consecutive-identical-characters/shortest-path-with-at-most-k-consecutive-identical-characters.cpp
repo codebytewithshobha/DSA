@@ -1,8 +1,7 @@
 class Solution {
 public:
     int shortestPath(int n, vector<vector<int>>& edges, string labels, int k) {
-
-   vector<vector<pair<int, int>>> adj(n);
+        vector<vector<pair<int, int>>> adj(n);
         for (const auto& edge : edges) {
             adj[edge[0]].push_back({edge[1], edge[2]});
         }
@@ -59,3 +58,4 @@ public:
         return -1;
     }
 };
+   
